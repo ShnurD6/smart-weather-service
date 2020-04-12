@@ -32,8 +32,6 @@ private:
     {
         std::ifstream file(aPath);
 
-        std::cout << std::filesystem::current_path() << std::endl;
-
         if (!file)
         {
             std::cout << "Cannot open a file with tocken :(\n"
