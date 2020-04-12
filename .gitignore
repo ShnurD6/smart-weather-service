@@ -1,9 +1,24 @@
-# Jetbrains User-specific stuff
+# Jetbrains user-specific stuff
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
 
+# Clion trash
+.idea/.gitignore
+.idea/.name
+.idea/misc.xml
+.idea/modules.xml
+.idea/smart-weather-service.iml
+.idea/vcs.xml
+
 # CMake
 cmake-build-*/
+
+# Tockens
+WeatherTocken.api
+CitiesTocken.api
+
+# Binary
+SmartWeatherService
