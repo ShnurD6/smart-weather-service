@@ -21,7 +21,7 @@ public:
     std::string& GetCitiesTocken()
     {
         static std::string citiesTocken{
-            PathToCitiesTocken};
+                ReadTockenFromFile(PathToCitiesTocken)};
 
         return citiesTocken;
     }

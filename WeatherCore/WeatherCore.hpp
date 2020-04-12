@@ -37,6 +37,28 @@ public:
         return result.str();
     }
 
+    std::string GetWeatherByCityName(std::string& aCityName)
+    {
+        const auto citiesQuery = CitiesQueryGenerator()
+            .SetCityName(aCityName)
+            .MakeQuery();
+
+        const auto response = json::parse(mCitiesApi.MakeRequest(citiesQuery));
+
+        if (auto error = CheckErrorInCitiesApiResponse(response); !error.empty())
+            return error;
+
+        auto& coordinates = response["results"][0]["geometry"];
+
+        double latitude = coordinates["lat"];
+        double longitude = coordinates["lng"];
+
+        auto latitudeStr = std::to_string(latitude);
+        auto longitudeStr = std::to_string(longitude);
+
+        return (GetWeatherByLocation(latitudeStr, longitudeStr));
+    }
+
 private:
 
     void CreateCurrentTemperaturePartOfAnswer(const json& aCurrentWeather, std::ostream& aStream)
@@ -55,6 +77,11 @@ private:
     }
 
     std::string CheckErrorInWeatherApiResponse(const json& aResponse)
+    {
+        return {};
+    }
+
+    std::string CheckErrorInCitiesApiResponse(const json& aResponse)
     {
         return {};
     }
