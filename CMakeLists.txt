@@ -7,5 +7,5 @@ set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
 
 
-add_executable(SmartWeatherService main.cpp ApiConnection/ApiConnection.hpp Credentials/Credentials.hpp)
+add_executable(SmartWeatherService main.cpp ApiConnection/ApiConnection.hpp Credentials/Credentials.hpp QueryGenerators/WeatherQueryGenerator.hpp)
 target_link_libraries(SmartWeatherService pthread )
