@@ -35,7 +35,7 @@ private:
         if (!file)
         {
             std::cout << "Cannot open a file with tocken :(\n"
-                         "Please, add " << aPath << " file" << std::endl;
+                         "Please, add " << aPath << " file to project root" << std::endl;
             exit(-1);
         }
 
