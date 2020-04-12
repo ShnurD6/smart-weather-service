@@ -30,7 +30,6 @@ public:
 
     [[nodiscard]] std::string MakeRequest(const std::string& aQueryString)
     {
-        std::cout << "aQuery = " << aQueryString << std::endl;
         http::request<http::string_body> request(http::verb::get, mApiTarget + aQueryString, 11);
         request.set(http::field::host, mHost);
         request.prepare_payload();

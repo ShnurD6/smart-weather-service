@@ -12,7 +12,7 @@ set(SOURCES
         Credentials/Credentials.hpp
         QueryGenerators/WeatherQueryGenerator.hpp
         QueryGenerators/CitiesQueryGenerator.hpp
-        JsonParser/JsonParser.hpp)
+        JsonParser/JsonParser.hpp "WeatherCore/WeatherCore.hpp")
 
 add_executable(SmartWeatherService ${SOURCES})
 target_link_libraries(SmartWeatherService pthread )

@@ -7,26 +7,33 @@ class WeatherQueryGenerator
     std::string mLatitude;
     std::string mLongitude;
     std::string mLang = "ru";
+    std::string mUnits = "metric";
 
     std::string mTocken = GetCredentials().GetWeatherTocken();
 
 public:
 
-    WeatherQueryGenerator& SetLatitude(std::string&& aLatitude)
+    WeatherQueryGenerator& SetLatitude(std::string& aLatitude)
     {
         mLatitude = aLatitude;
         return *this;
     }
 
-    WeatherQueryGenerator& SetLongitude(std::string&& aLongitude)
+    WeatherQueryGenerator& SetLongitude(std::string& aLongitude)
     {
         mLongitude = aLongitude;
         return *this;
     }
 
-    WeatherQueryGenerator& SetLang(std::string&& aLang)
+    WeatherQueryGenerator& SetLang(std::string& aLang)
     {
         mLang = aLang;
+        return *this;
+    }
+
+    WeatherQueryGenerator& SetUnits(std::string& aUnits)
+    {
+        mUnits = aUnits;
         return *this;
     }
 
@@ -36,6 +43,7 @@ public:
             + "lat=" + mLatitude + "&"
             + "lon=" + mLongitude + "&"
             + "appid=" + mTocken + "&"
-            + "lang=" + mLang;
+            + "lang=" + mLang + "&"
+            + "units=" + mUnits;
     }
 };
