@@ -27,7 +27,7 @@ public:
         mSocket.shutdown(boost::asio::ip::tcp::socket::shutdown_both);
     }
 
-    [[nodiscard]] std::string MakeRequest(std::string& aQueryString)
+    [[nodiscard]] std::string MakeRequest(const std::string& aQueryString)
     {
         std::cout << "aQuery = " << aQueryString << std::endl;
         http::request<http::string_body> request(http::verb::get, mApiTarget + aQueryString, 11);
