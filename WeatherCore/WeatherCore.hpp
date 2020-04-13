@@ -17,6 +17,11 @@ public:
     {
         std::stringstream result;
 
+        if (!isCorrectCoordinate(aLatitude) || !isCorrectCoordinate(aLongitude))
+        {
+            return "Coordinates are incorrect. Please, enter correct coordinate";
+        }
+
         const auto weatherQuery = WeatherQueryGenerator()
             .SetLatitude(aLatitude)
             .SetLongitude(aLongitude)
@@ -47,6 +52,9 @@ public:
 
         if (auto error = CheckErrorInCitiesApiResponse(response); !error.empty())
             return error;
+
+        if (response["results"].empty())
+            return "Please, enter the correct city.";
 
         auto& coordinates = response["results"][0]["geometry"];
 
@@ -84,5 +92,17 @@ private:
     std::string CheckErrorInCitiesApiResponse(const json& aResponse)
     {
         return {};
+    }
+
+    bool isCorrectCoordinate(const std::string& aPotentialCoorginate)
+    {
+        if (aPotentialCoorginate.empty())
+            return false;
+
+        for (char c: aPotentialCoorginate)
+            if (!std::isdigit(c) && c != '.')
+                return false;
+
+        return true;
     }
 };

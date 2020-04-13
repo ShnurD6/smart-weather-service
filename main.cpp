@@ -27,7 +27,7 @@ int main()
         std::cout << "Enter Longitude:" << std::endl;
         std::cin >> Longitude;
 
-        std::cout << core.GetWeatherByLocation(Latitude, Longitude) << std::endl;
+        std::cout << "\n" << core.GetWeatherByLocation(Latitude, Longitude) << std::endl;
     }
     else if (buf == 1)
     {
@@ -36,7 +36,7 @@ int main()
         std::cout << "Enter city name:" << std::endl;
         std::cin >> city_name;
 
-        std::cout << core.GetWeatherByCityName(city_name) << std::endl;
+        std::cout << "\n" << core.GetWeatherByCityName(city_name) << std::endl;
     }
 
     return 0;
