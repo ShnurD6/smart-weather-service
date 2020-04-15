@@ -93,12 +93,21 @@ private:
 
     std::string CheckErrorInWeatherApiResponse(const json& aResponse)
     {
+        unsigned responseCode;
+
         if (aResponse.contains("cod"))
         {
-            unsigned responseCode = aResponse["cod"];
+            // This is a VERY weird API.
+            // Sometimes it sends the code with a number, BUT sometimes with a string ))
+            if (aResponse["cod"].is_string())
+                responseCode = std::stoi(aResponse["cod"].get<std::string>());
+            else
+                responseCode = aResponse["cod"].get<unsigned>();
 
             switch (responseCode)
             {
+                case 400:
+                    return "Incorrect coordinates. Please, try again";
                 case 401:
                     return "Invalid Weather token :(";
                 case 429:
