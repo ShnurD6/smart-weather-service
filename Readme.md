@@ -20,8 +20,8 @@
 
 ---
 Как это запустить:
-1) Добавить ключ API для сервиса http://api.openweathermap.org в файл WeatherTocken.api в корень проекта
-2) Добавить ключ API для сервиса http://api.opencagedata.com/ в файл CitiesTocken.api в корень проекта
+1) Добавить ключ API для сервиса http://api.openweathermap.org в файл Weathertoken.api в корень проекта
+2) Добавить ключ API для сервиса http://api.opencagedata.com/ в файл Citiestoken.api в корень проекта
 3) `cmake .`
 4) `make -j4`
 5) `./SmartWeatherService`

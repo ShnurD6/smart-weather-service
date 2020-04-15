@@ -6,35 +6,35 @@
 
 class Credentials
 {
-    static constexpr auto PathToWeatherTocken = "WeatherTocken.api";
-    static constexpr auto PathToCitiesTocken = "CitiesTocken.api";
+    static constexpr auto PathToWeatherToken = "WeatherToken.api";
+    static constexpr auto PathToCitiesToken = "CitiesToken.api";
 
 public:
-    std::string& GetWeatherTocken()
+    std::string& GetWeatherToken()
     {
-        static std::string weatherTocken{
-            ReadTockenFromFile(PathToWeatherTocken)};
+        static std::string weatherToken{
+            ReadTokenFromFile(PathToWeatherToken)};
 
-        return weatherTocken;
+        return weatherToken;
     }
 
-    std::string& GetCitiesTocken()
+    std::string& GetCitiesToken()
     {
-        static std::string citiesTocken{
-                ReadTockenFromFile(PathToCitiesTocken)};
+        static std::string citiesToken{
+                ReadTokenFromFile(PathToCitiesToken)};
 
-        return citiesTocken;
+        return citiesToken;
     }
 
 private:
 
-    std::string ReadTockenFromFile(const char* aPath)
+    std::string ReadTokenFromFile(const char* aPath)
     {
         std::ifstream file(aPath);
 
         if (!file)
         {
-            std::cout << "Cannot open a file with tocken :(\n"
+            std::cout << "Cannot open a file with token :(\n"
                          "Please, add " << aPath << " file to project root" << std::endl;
             exit(-1);
         }
@@ -45,8 +45,8 @@ private:
 
         if (result.empty())
         {
-            std::cout << "File with tocken " << aPath << " empty :(\n"
-                         "Please, write correct tocken to the file." << std::endl;
+            std::cout << "File with token " << aPath << " empty :(\n"
+                         "Please, write correct token to the file." << std::endl;
             exit(-1);
         }
 

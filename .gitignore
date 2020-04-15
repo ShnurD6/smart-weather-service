@@ -16,9 +16,9 @@
 # CMake
 cmake-build-*/
 
-# Tockens
-WeatherTocken.api
-CitiesTocken.api
+# tokens
+WeatherToken.api
+CitiesToken.api
 
 # Binary
 SmartWeatherService

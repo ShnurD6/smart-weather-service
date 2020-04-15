@@ -9,7 +9,7 @@ class WeatherQueryGenerator
     std::string mLang = "ru";
     std::string mUnits = "metric";
 
-    std::string mTocken = GetCredentials().GetWeatherTocken();
+    std::string mTocken = GetCredentials().GetWeatherToken();
 
 public:
 

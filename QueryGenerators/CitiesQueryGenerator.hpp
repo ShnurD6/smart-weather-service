@@ -6,7 +6,7 @@ class CitiesQueryGenerator
 {
     std::string mCityName;
 
-    std::string mTocken = GetCredentials().GetCitiesTocken();
+    std::string mTocken = GetCredentials().GetCitiesToken();
 
 public:
 
