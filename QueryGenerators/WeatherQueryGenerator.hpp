@@ -13,25 +13,25 @@ class WeatherQueryGenerator
 
 public:
 
-    WeatherQueryGenerator& SetLatitude(std::string& aLatitude)
+    WeatherQueryGenerator& SetLatitude(const std::string& aLatitude)
     {
         mLatitude = aLatitude;
         return *this;
     }
 
-    WeatherQueryGenerator& SetLongitude(std::string& aLongitude)
+    WeatherQueryGenerator& SetLongitude(const std::string& aLongitude)
     {
         mLongitude = aLongitude;
         return *this;
     }
 
-    WeatherQueryGenerator& SetLang(std::string& aLang)
+    WeatherQueryGenerator& SetLang(const std::string& aLang)
     {
         mLang = aLang;
         return *this;
     }
 
-    WeatherQueryGenerator& SetUnits(std::string& aUnits)
+    WeatherQueryGenerator& SetUnits(const std::string& aUnits)
     {
         mUnits = aUnits;
         return *this;

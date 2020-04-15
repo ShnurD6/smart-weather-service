@@ -10,7 +10,7 @@ class CitiesQueryGenerator
 
 public:
 
-    CitiesQueryGenerator& SetCityName(std::string& aCityName)
+    CitiesQueryGenerator& SetCityName(const std::string& aCityName)
     {
         mCityName = aCityName;
         return *this;

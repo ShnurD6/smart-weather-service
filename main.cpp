@@ -1,6 +1,5 @@
 #include <iostream>
 #include "ApiConnection/ApiConnection.hpp"
-#include "QueryGenerators/QueryGenerators.hpp"
 #include "WeatherCore/WeatherCore.hpp"
 
 using json = nlohmann::json;
@@ -36,7 +35,21 @@ int main()
         std::cout << "Enter city name:" << std::endl;
         std::cin >> city_name;
 
-        std::cout << "\n" << core.GetWeatherByCityName(city_name) << std::endl;
+        std::cout << "\n" << core.GetWeatherByCityName(
+            city_name,
+            [](const std::vector<std::string>& aPossibleCities) -> size_t
+            {
+                size_t result = 1; // <-------------------------------------------------\
+                                                                                    //  |
+                std::cout << "Specify the city:" << std::endl;                      //  |
+                for (const auto& possibleCity : aPossibleCities)                    //  |
+                {                                                                   //  |
+                    std::cout << result++ << ": " << possibleCity << std::endl;     //  |
+                }                                                                   //  |
+                std::cin >> result;                                                 //  |
+                std::cout << std::endl;                                             //  |
+                return --result; // <-- This is only for the convenience of the user) <-/
+            }) << std::endl;
     }
 
     return 0;

@@ -13,7 +13,9 @@ class WeatherCore
 
 public:
 
-    std::string GetWeatherByLocation(std::string& aLatitude, std::string& aLongitude)
+    std::string GetWeatherByLocation(
+        const std::string& aLatitude,
+        const std::string& aLongitude)
     {
         std::stringstream result;
 
@@ -42,7 +44,9 @@ public:
         return result.str();
     }
 
-    std::string GetWeatherByCityName(std::string& aCityName)
+    std::string GetWeatherByCityName(
+        const std::string& aCityName,
+        const std::function<size_t(std::vector<std::string>)>& aChoiseCitiesCallback)
     {
         const auto citiesQuery = CitiesQueryGenerator()
             .SetCityName(aCityName)
@@ -55,7 +59,11 @@ public:
         if (auto error = CheckErrorInCitiesApiResponse(response); !error.empty())
             return error;
 
-        auto& coordinates = response["results"][0]["geometry"];
+        const auto& [city, choiseCityError] = ChoiseCity(response, aChoiseCitiesCallback);
+        if (!choiseCityError.empty())
+            return choiseCityError;
+
+        const auto& coordinates = city["geometry"];
 
         double latitude = coordinates["lat"];
         double longitude = coordinates["lng"];
@@ -107,8 +115,6 @@ private:
 
     std::string CheckErrorInCitiesApiResponse(const json& aResponse)
     {
-        std::cout << aResponse << std::endl;
-
         unsigned responseCode = aResponse["status"]["code"];
 
         switch (responseCode)
@@ -138,7 +144,7 @@ private:
             return false;
 
         for (char c: aPotentialCoorginate)
-            if (!std::isdigit(c) && c != '.')
+            if (!std::isdigit(c) && c != '.' && c != '-')
                 return false;
 
         return true;
@@ -160,5 +166,24 @@ private:
             "Something wrong with you request, please, check all and resend.\n"
                "Notice: We can parse only latin letters"};
         }
+    }
+
+    auto ChoiseCity(
+        const json& aResponse,
+        const std::function<size_t(std::vector<std::string>&)>& aChoiseCitiesCallback)
+//                  result, error
+        -> std::pair<json, std::string>
+    {
+        std::vector<std::string> possibleCities;
+
+        for (const json& resultIt: aResponse["results"])
+            possibleCities.emplace_back(resultIt["formatted"]);
+
+        size_t cityNum = aChoiseCitiesCallback(possibleCities);
+
+        if (cityNum + 1 < cityNum || cityNum + 1 > aResponse["results"].size())
+            return {json{}, "Incorrect city choisen. Please, try again."};
+
+        return {aResponse["results"][cityNum], {}};
     }
 };
