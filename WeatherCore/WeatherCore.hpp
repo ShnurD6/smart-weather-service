@@ -41,6 +41,12 @@ public:
         // Сейчас темпетатура составляет ... (и ощущается как ... / по ощущениям так же)
         CreateCurrentTemperaturePartOfAnswer(currentWeather, result);
 
+        // На улице пасмурно/солнечно/etc
+        CreateDescriptionPartOfAnswer(currentWeather, result);
+
+        // Влажность возжуха составляет X%
+        CreateHumidityPartOfAnswer(currentWeather, result);
+
         return result.str();
     }
 
@@ -84,11 +90,26 @@ private:
         aStream << "Сейчас температура составляет " << actualTemp << "℃, ";
 
         if (actualTemp != feelsLike)
-            aStream << "но ощущается как " << feelsLike;
+            aStream << "но ощущается как " << feelsLike << "℃";
         else
-            aStream << "по ощущениям так же :)";
+            aStream << "по ощущениям так же";
 
-        aStream << "℃" << std::endl;
+        aStream << " :)" << std::endl;
+    }
+
+    void CreateDescriptionPartOfAnswer(const json& aCurrentWeather, std::ostream& aStream)
+    {
+        // API always sends an array of one element. Strange, but ok)
+        const std::string& weatherDescription = aCurrentWeather["weather"][0]["description"];
+
+        aStream << "На улице " << weatherDescription << "," << std::endl;
+    }
+
+    void CreateHumidityPartOfAnswer(const json& aCurrentWeather, std::ostream& aStream)
+    {
+        const auto& weatherHumidity = aCurrentWeather["humidity"];
+
+        aStream << "влажность воздуха составляет " << weatherHumidity << "%" << std::endl;
     }
 
     std::string CheckErrorInWeatherApiResponse(const json& aResponse)
