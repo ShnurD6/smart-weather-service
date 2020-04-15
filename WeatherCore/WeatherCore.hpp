@@ -18,19 +18,19 @@ public:
         std::stringstream result;
 
         if (!isCorrectCoordinate(aLatitude) || !isCorrectCoordinate(aLongitude))
-        {
             return "Coordinates are incorrect. Please, enter correct coordinate";
-        }
 
         const auto weatherQuery = WeatherQueryGenerator()
             .SetLatitude(aLatitude)
             .SetLongitude(aLongitude)
             .MakeQuery();
+        
+        const auto [response, parseError] = SafetyParseJson(mWeatherApi.MakeRequest(weatherQuery));
 
-        const auto response = json::parse(mWeatherApi.MakeRequest(weatherQuery));
-
-        if (auto error = CheckErrorInWeatherApiResponse(response); !error.empty())
-            return error;
+        if (!parseError.empty())
+            return parseError;
+        if (auto errorInResponse = CheckErrorInWeatherApiResponse(response); !errorInResponse.empty())
+            return errorInResponse;
 
         const auto& currentWeather = response["current"];
 
@@ -48,13 +48,12 @@ public:
             .SetCityName(aCityName)
             .MakeQuery();
 
-        const auto response = json::parse(mCitiesApi.MakeRequest(citiesQuery));
+        const auto [response, parseError] = SafetyParseJson(mCitiesApi.MakeRequest(citiesQuery));
 
+        if (!parseError.empty())
+            return parseError;
         if (auto error = CheckErrorInCitiesApiResponse(response); !error.empty())
             return error;
-
-        if (response["results"].empty())
-            return "Please, enter the correct city.";
 
         auto& coordinates = response["results"][0]["geometry"];
 
@@ -86,14 +85,53 @@ private:
 
     std::string CheckErrorInWeatherApiResponse(const json& aResponse)
     {
+        if (aResponse.contains("cod"))
+        {
+            unsigned responseCode = aResponse["cod"];
+
+            switch (responseCode)
+            {
+                case 401:
+                    return "Invalid Weather token :(";
+                case 429:
+                    return "Weather token exceeding of requests limitation of your subscription type.\n"
+                           "Refresh the token, please :(";
+                case 503:
+                    return "Weather API is down :(\n"
+                           "Try again latter";
+            }
+        }
+
         return {};
     }
 
     std::string CheckErrorInCitiesApiResponse(const json& aResponse)
     {
+        std::cout << aResponse << std::endl;
+
+        unsigned responseCode = aResponse["status"]["code"];
+
+        switch (responseCode)
+        {
+            case 401:
+                return "Invalid Cities token :(";
+            case 402:
+                return "Sorry, but you exceeded cities token (payment required) :(";
+            case 408:
+                return "Timeout in Cities API. Try again)";
+            case 429:
+                return "Too many requests to Cities API. Try again)";
+            case 503:
+                return "Cities API is down :(\n"
+                       "Try again latter";
+        }
+
+        if (aResponse["results"].empty())
+            return "Please, enter the correct city.";
+
         return {};
     }
-
+    
     bool isCorrectCoordinate(const std::string& aPotentialCoorginate)
     {
         if (aPotentialCoorginate.empty())
@@ -104,5 +142,23 @@ private:
                 return false;
 
         return true;
+    }
+    
+    auto SafetyParseJson(std::string&& aResponse)
+//              <response, error>
+        -> std::pair<json, std::string>
+    {
+
+        try
+        {
+            return {json::parse(aResponse), {}};
+        }
+        catch (json::exception&)
+        {
+            return {
+            json{},
+            "Something wrong with you request, please, check all and resend.\n"
+               "Notice: We can parse only latin letters"};
+        }
     }
 };
