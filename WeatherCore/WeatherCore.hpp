@@ -47,6 +47,9 @@ public:
         // Влажность возжуха составляет X%
         CreateHumidityPartOfAnswer(currentWeather, result);
 
+        // Скорость ветра n м/c
+        CreateWindSpeedPartOfAnswer(currentWeather, result);
+
         return result.str();
     }
 
@@ -84,7 +87,7 @@ private:
 
     void CreateCurrentTemperaturePartOfAnswer(const json& aCurrentWeather, std::ostream& aStream)
     {
-        int actualTemp = aCurrentWeather["dew_point"];
+        int actualTemp = aCurrentWeather["temp"];
         int feelsLike = aCurrentWeather["feels_like"];
 
         aStream << "Сейчас температура составляет " << actualTemp << "℃, ";
@@ -109,7 +112,14 @@ private:
     {
         const auto& weatherHumidity = aCurrentWeather["humidity"];
 
-        aStream << "влажность воздуха составляет " << weatherHumidity << "%" << std::endl;
+        aStream << "влажность воздуха составляет " << weatherHumidity << "%," << std::endl;
+    }
+
+    void CreateWindSpeedPartOfAnswer(const json& aCurrentWeather, std::ostream& aStream)
+    {
+        const auto& windSpeed = aCurrentWeather["wind_speed"];
+
+        aStream << "скорость ветра " << windSpeed << " м/c" << std::endl;
     }
 
     std::string CheckErrorInWeatherApiResponse(const json& aResponse)
