@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "../Credentials/Credentials.hpp"
+#include "Credentials/Credentials.hpp"
 
 class WeatherQueryGenerator
 {

@@ -4,7 +4,7 @@
 #include <boost/beast.hpp>
 #include <boost/beast/http.hpp>
 #include <boost/asio.hpp>
-#include "../JsonParser/JsonParser.hpp"
+#include "JsonParser/JsonParser.hpp"
 
 namespace http = boost::beast::http;
 

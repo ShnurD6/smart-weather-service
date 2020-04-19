@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
-#include "../ApiConnection/ApiConnection.hpp"
-#include "../QueryGenerators/QueryGenerators.hpp"
-#include "../JsonParser/JsonParser.hpp"
+#include "ApiConnection/ApiConnection.hpp"
+#include "QueryGenerators/QueryGenerators.hpp"
+#include "JsonParser/JsonParser.hpp"
 
 using json = nlohmann::json;
 
@@ -55,7 +55,7 @@ public:
 
     std::string GetWeatherByCityName(
         const std::string& aCityName,
-        const std::function<size_t(std::vector<std::string>)>& aChoiseCitiesCallback)
+        const std::function<size_t(std::vector<std::string>&)>& aChoiseCitiesCallback)
     {
         const auto citiesQuery = CitiesQueryGenerator()
             .SetCityName(aCityName)
