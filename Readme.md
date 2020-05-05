@@ -48,7 +48,7 @@
 
 Как это запустить:
 
-1) Добавить в корень проекта токены для api.openweathermap.org и api.opencagedata.com, в файлы WeatherToken.api и CitiesToken.api соответственно
+1) Добавить в корень проекта токены для api.openweathermap.org, api.opencagedata.com и Telegram в файлы WeatherToken.api, CitiesToken.api TelegramToken.api соответственно
 2) `docker build -t smart-weather-service -f Dockerfile.dockerfile .`
 3) `docker run -it smart-weather-service`
 
