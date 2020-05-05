@@ -8,6 +8,7 @@ class Credentials
 {
     static constexpr auto PathToWeatherToken = "WeatherToken.api";
     static constexpr auto PathToCitiesToken = "CitiesToken.api";
+    static constexpr auto PathToTelegramToken = "TelegramToken.api";
 
 public:
     std::string& GetWeatherToken()
@@ -21,9 +22,17 @@ public:
     std::string& GetCitiesToken()
     {
         static std::string citiesToken{
-                ReadTokenFromFile(PathToCitiesToken)};
+            ReadTokenFromFile(PathToCitiesToken)};
 
         return citiesToken;
+    }
+
+    std::string& GetTelegramToken()
+    {
+        static std::string telegramToken{
+            ReadTokenFromFile(PathToTelegramToken)};
+
+        return telegramToken;
     }
 
 private:
