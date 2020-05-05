@@ -15,7 +15,7 @@ ADD Sources /app/Sources
 ADD CMakeLists.txt CitiesToken.api WeatherToken.api TelegramToken.api /app/
 
 WORKDIR /app/build
-RUN cmake ../ -DCMAKE_CXX_COMPILER=/usr/bin/clang++-11 && make -j4
+RUN cmake ../ -DCMAKE_CXX_COMPILER=/usr/bin/clang++-11 && make -j4 TelegramClient
 
 WORKDIR /app
-ENTRYPOINT ./SmartWeatherService
+ENTRYPOINT ./TelegramClient

@@ -10,7 +10,8 @@ CitiesToken.api
 TelegramToken.api
 
 # Binary
-SmartWeatherService
+ConsoleClient
+TelegramClient
 
 # Logs
 log.txt
