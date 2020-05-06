@@ -199,8 +199,9 @@ private:
             keyboard);
     }
 
-    void Log(const std::string&& aNewLog) const
+    template <typename T>
+    void Log(T&& aNewLog) const
     {
-        GetLogger().Log("[TgCli] " + aNewLog);
+        GetLogger().Log("[TgCli] "s + std::forward<T>(aNewLog));
     }
 };

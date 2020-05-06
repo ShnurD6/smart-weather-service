@@ -70,8 +70,9 @@ private:
     const char* mHost;
     const char* mApiTarget;
 
-    void Log(const std::string&& aNewLog) const
+    template <typename T>
+    void Log(T&& aNewLog) const
     {
-        GetLogger().Log("[ApiCon] " + aNewLog);
+        GetLogger().Log("[ApiCon] " + std::forward<T>(aNewLog));
     }
 };

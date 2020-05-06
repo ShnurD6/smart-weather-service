@@ -32,9 +32,11 @@ public:
 
         std::vector<std::string> PossibleCityNames;
 
-        Reply& SetError(TError&& aError)
+        template <typename T>
+        Reply& SetError(T&& aError)
         {
-            Error = std::forward<TError>(aError);
+            static_assert(std::is_convertible_v<T, TError>, "Type must be convertible to TError");
+            Error = std::forward<T>(aError);
             return *this;
         }
     };
@@ -278,9 +280,10 @@ private:
         return mRequestId++;
     }
 
-    void Log(const std::string&& aNewLog) const
+    template <typename T>
+    void Log(T&& aNewLog) const
     {
-        GetLogger().Log("[Core] " + aNewLog);
+        GetLogger().Log("[Core] " + std::forward<T>(aNewLog));
     }
 
     mutable Reply::TRequestId mRequestId;
