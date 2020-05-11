@@ -13,7 +13,7 @@ RUN apt-get update && \
     make install
 
 ADD Sources /app/Sources
-ADD CMakeLists.txt CitiesToken.api WeatherToken.api TelegramToken.api /app/
+ADD CMakeLists.txt *.api /app/
 
 WORKDIR /app/build
 RUN cmake ../ -DCMAKE_CXX_COMPILER=/usr/bin/clang++-11 && make -j4 TelegramClient

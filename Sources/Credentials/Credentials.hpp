@@ -7,14 +7,22 @@
 class Credentials
 {
     static constexpr auto PathToWeatherToken = "WeatherToken.api";
+    static constexpr auto WeatherTokenEnv = "SWS_WEATHER_TOKEN";
+
     static constexpr auto PathToCitiesToken = "CitiesToken.api";
+    static constexpr auto CitiesTokenEnv = "SWS_CITIES_TOKEN";
+
     static constexpr auto PathToTelegramToken = "TelegramToken.api";
+    static constexpr auto TelegramTokenEnv = "SWS_TELEGRAM_TOKEN";
 
 public:
     std::string& GetWeatherToken()
     {
         static std::string weatherToken{
-            ReadTokenFromFile(PathToWeatherToken)};
+            GetToken(
+                "OpenWeatherMap",
+                PathToWeatherToken,
+                WeatherTokenEnv)};
 
         return weatherToken;
     }
@@ -22,7 +30,10 @@ public:
     std::string& GetCitiesToken()
     {
         static std::string citiesToken{
-            ReadTokenFromFile(PathToCitiesToken)};
+            GetToken(
+                "OpenCageData",
+                PathToCitiesToken,
+                CitiesTokenEnv)};
 
         return citiesToken;
     }
@@ -30,34 +41,56 @@ public:
     std::string& GetTelegramToken()
     {
         static std::string telegramToken{
-            ReadTokenFromFile(PathToTelegramToken)};
+            GetToken(
+                "Telegram",
+                PathToTelegramToken,
+                TelegramTokenEnv)};
 
         return telegramToken;
     }
 
 private:
 
-    std::string ReadTokenFromFile(const char* aPath)
+    std::string GetToken(
+        const char* aTokenName,
+        const char* aPathToFile,
+        const char* aEnvVar)
     {
-        std::ifstream file(aPath);
+        std::string token;
+
+        token = GetTokenFromEnv(aEnvVar);
+        if (!token.empty())
+            return token;
+
+        token = GetTokenFromFile(aPathToFile);
+        if (!token.empty())
+            return token;
+
+        std::cerr << "Cannot find a " << aTokenName << " token.\n"
+                     "Please, add " << aPathToFile << " file to project root or " << aEnvVar << " env variable" << std::endl;
+        exit(-1);
+    }
+
+    std::string GetTokenFromEnv(const char* aEnvVar)
+    {
+        const auto envToken = std::getenv(aEnvVar);
+
+        return envToken
+            ? envToken
+            : "";
+    }
+
+    std::string GetTokenFromFile(const char* aPathToFile)
+    {
+        std::string result;
+        std::ifstream file(aPathToFile);
 
         if (!file)
-        {
-            std::cout << "Cannot open a file with token :(\n"
-                         "Please, add " << aPath << " file to project root" << std::endl;
-            exit(-1);
-        }
+            return result;
 
-        auto result = std::string(
+        result = std::string(
             std::istreambuf_iterator<char>(file),
             std::istreambuf_iterator<char>());
-
-        if (result.empty())
-        {
-            std::cout << "File with token " << aPath << " empty :(\n"
-                         "Please, write correct token to the file." << std::endl;
-            exit(-1);
-        }
 
         return result;
     }
