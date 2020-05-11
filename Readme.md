@@ -1,4 +1,4 @@
-# Умный сервис прогноза погоды
+# Умный сервис прогноза погоды [![Build Status](https://travis-ci.org/ShnurD6/smart-weather-service.svg?branch=master)](https://travis-ci.org/ShnurD6/smart-weather-service)
 **Средний уровень сложности**
 
 - Для работы сервиса используется язык программирования C++
