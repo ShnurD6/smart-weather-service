@@ -43,10 +43,7 @@ struct TelegramClient
 
             Log("Started with username " + Bot.getApi().getMe()->username, Logger::LogType::Debug);
             while (true)
-            {
-                std::cout << "Long poll started" << std::endl;
                 longPoll.start();
-            }
         }
         catch (TgBot::TgException& e)
         {

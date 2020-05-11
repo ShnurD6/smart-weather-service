@@ -18,7 +18,7 @@ set(SOURCES
 include_directories(Sources /usr/local/include)
 
 add_executable(ConsoleClient ${SOURCES} Sources/Clients/Console/main.cpp)
-target_link_libraries(ConsoleClient pthread)
+target_link_libraries(ConsoleClient pthread boost_date_time)
 
 add_executable(TelegramClient ${SOURCES} Sources/Clients/Telegram/main.cpp)
-target_link_libraries(TelegramClient pthread ssl crypto /usr/local/lib/libTgBot.a)
+target_link_libraries(TelegramClient pthread ssl crypto boost_date_time /usr/local/lib/libTgBot.a)

@@ -4,6 +4,7 @@ RUN apt-get update && \
     apt-get install -y \
         libcurl4-openssl-dev \
         libboost-system-dev \
+        libboost-date-time-dev \
         cmake && \
     git clone https://github.com/reo7sp/tgbot-cpp && \
     cd tgbot-cpp && \
