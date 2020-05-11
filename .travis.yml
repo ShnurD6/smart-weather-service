@@ -1,0 +1,7 @@
+services:
+  - docker
+install:
+  - docker build -t smart-weather-service -f Dockerfile.dockerfile .
+  - docker run smart-weather-service
+script:
+  - docker ps | grep -q smart-weather-service
