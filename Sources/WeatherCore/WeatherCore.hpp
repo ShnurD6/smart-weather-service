@@ -61,7 +61,7 @@ public:
         std::stringstream result;
 
         if (!isCorrectCoordinate(aLatitude) || !isCorrectCoordinate(aLongitude))
-            return "Coordinates are incorrect. Please, enter correct coordinate";
+            return "Координаты неверные. Пожалуйста, введите корректные координаты";
 
         const auto weatherQuery = WeatherQueryGenerator()
             .SetLatitude(aLatitude)
@@ -102,7 +102,7 @@ public:
         Reply result;
 
         if (!ValidateSymbolsInRequestCityName(aCityName))
-            return result.SetError("Wrong city name. Please, use only latin letters");
+            return result.SetError("Пожалуйста, используйте только латиницу");
 
         const auto citiesQuery = CitiesQueryGenerator()
             .SetCityName(aCityName)
@@ -229,7 +229,7 @@ private:
         }
 
         if (aResponse["results"].empty())
-            return "Please, enter the correct city.";
+            return "Пожалуйста, введите существующий город";
 
         return {};
     }
@@ -260,8 +260,7 @@ private:
                 "Try to parse \'" + aResponse + "\', but catch parse exception: "s + aException.what(),
                 Logger::LogType::Error);
 
-            return "Something wrong with you request, please, check all and resend.\n"
-                   "Notice: We can parse only latin letters"s;
+            return "Что-то не так с реквестом, пожалуйста, перепроверьте данные и попробуйте ещё раз)"s;
         }
     }
 
