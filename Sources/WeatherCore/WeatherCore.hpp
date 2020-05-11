@@ -251,7 +251,7 @@ private:
         }
         catch (json::exception& aException)
         {
-            Log("Catch parse exception: "s + aException.what());
+            Log("Try to parse \'" + aResponse + "\', but catch parse exception: "s + aException.what());
 
             return "Something wrong with you request, please, check all and resend.\n"
                    "Notice: We can parse only latin letters"s;
