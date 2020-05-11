@@ -5,9 +5,23 @@
 
 struct Logger
 {
-    void Log(const std::string& aNewLog)
+    enum class LogType
     {
-        mLogFile << boost::posix_time::second_clock::local_time() << ": " << aNewLog << std::endl;
+        Debug,
+        Error
+    };
+
+    void Log(const std::string& aNewLog, LogType aLogType)
+    {
+        switch (aLogType)
+        {
+            case LogType::Debug:
+                DebugLog(aNewLog);
+            case LogType::Error:
+                ErrorLog(aNewLog);
+            default:
+                assert(false && "Unknown logType");
+        }
     }
 
     Logger()
@@ -19,6 +33,18 @@ struct Logger
     ~Logger()
     {
         mLogFile.close();
+    }
+
+private:
+
+    void DebugLog(const std::string& aNewLog)
+    {
+        mLogFile << boost::posix_time::second_clock::local_time() << ": " << aNewLog << std::endl;
+    }
+
+    void ErrorLog(const std::string& aNewLog)
+    {
+        mLogFile << boost::posix_time::second_clock::local_time() << ": [!] " << aNewLog << std::endl;
     }
 
     std::fstream mLogFile;

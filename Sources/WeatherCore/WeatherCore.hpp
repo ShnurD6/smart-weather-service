@@ -54,7 +54,9 @@ public:
         const std::string& aLatitude,
         const std::string& aLongitude) const
     {
-        Log((boost::format("GetWeatherByLocation(%s, %s)") % aLatitude % aLongitude).str());
+        Log(
+            (boost::format("GetWeatherByLocation(%s, %s)") % aLatitude % aLongitude).str(),
+            Logger::LogType::Debug);
 
         std::stringstream result;
 
@@ -98,6 +100,9 @@ public:
     Reply RegisterRequestByCityName(const std::string& aCityName) const
     {
         Reply result;
+
+        if (!ValidateSymbolsInRequestCityName(aCityName))
+            return result.SetError("Wrong city name. Please, use only latin letters");
 
         const auto citiesQuery = CitiesQueryGenerator()
             .SetCityName(aCityName)
@@ -251,7 +256,9 @@ private:
         }
         catch (json::exception& aException)
         {
-            Log("Try to parse \'" + aResponse + "\', but catch parse exception: "s + aException.what());
+            Log(
+                "Try to parse \'" + aResponse + "\', but catch parse exception: "s + aException.what(),
+                Logger::LogType::Error);
 
             return "Something wrong with you request, please, check all and resend.\n"
                    "Notice: We can parse only latin letters"s;
@@ -275,15 +282,24 @@ private:
         return possibleCities;
     }
 
+    bool ValidateSymbolsInRequestCityName(const std::string &aCityName) const
+    {
+        for (const auto c: aCityName)
+            if (!std::isalpha(c))
+                return false;
+
+        return true;
+    }
+
     Reply::TRequestId GetNewRequestId() const
     {
         return mRequestId++;
     }
 
     template <typename T>
-    void Log(T&& aNewLog) const
+    void Log(T&& aNewLog, Logger::LogType aLogType) const
     {
-        GetLogger().Log("[Core] " + std::forward<T>(aNewLog));
+        GetLogger().Log("[Core] " + std::forward<T>(aNewLog), aLogType);
     }
 
     mutable Reply::TRequestId mRequestId;

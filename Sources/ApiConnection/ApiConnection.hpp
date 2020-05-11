@@ -22,9 +22,9 @@ public:
         , mHost(aHost)
         , mApiTarget(aApiTarget)
     {
-        Log("Connecting to "s + mHost + "..."s);
+        Log("Connecting to "s + mHost + "..."s, Logger::LogType::Debug);
         boost::asio::connect(mSocket, mResolver.resolve(mHost, "80"));
-        Log("Connecting to "s + mHost + " success!"s);
+        Log("Connecting to "s + mHost + " success!"s, Logger::LogType::Debug);
     };
 
     ~ApiConnection()
@@ -38,9 +38,16 @@ public:
         request.set(http::field::host, mHost);
         request.prepare_payload();
 
-        Log("Send " + aQueryString + " to " + mHost + "...");
+        Log("Send " + aQueryString + " to " + mHost + "...", Logger::LogType::Debug);
 
-        http::write(mSocket, request);
+        try
+        {
+            http::write(mSocket, request);
+        }
+        catch (std::exception& aException)
+        {
+            Log("Catch exception when write socket: "s + aException.what(), Logger::LogType::Error);
+        }
 
         boost::beast::flat_buffer buffer;
 
@@ -52,10 +59,10 @@ public:
         }
         catch (std::exception& aException)
         {
-            Log("Catch exception when read from socket: "s + aException.what());
+            Log("Catch exception when read from socket: "s + aException.what(), Logger::LogType::Error);
         }
 
-        Log("Get result from "s + mHost);
+        Log("Get result from "s + mHost, Logger::LogType::Debug);
 
         return result.body();
     }
@@ -71,8 +78,8 @@ private:
     const char* mApiTarget;
 
     template <typename T>
-    void Log(T&& aNewLog) const
+    void Log(T&& aNewLog, Logger::LogType aLogType) const
     {
-        GetLogger().Log("[ApiCon] " + std::forward<T>(aNewLog));
+        GetLogger().Log("[ApiCon] " + std::forward<T>(aNewLog), aLogType);
     }
 };
