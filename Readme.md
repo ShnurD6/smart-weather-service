@@ -48,7 +48,14 @@
 
 Как это запустить:
 
-1) Для работы проекта необходимы токены для api.openweathermap.org, api.opencagedata.com и Telegram. Их можно добавить либо в файлы `WeatherToken.api`, `CitiesToken.api`, `TelegramToken.api` в корень проекта, либо в переменные `SWS_WEATHER_TOKEN`, `SWS_CITIES_TOKEN` и `SWS_TELEGRAM_TOKEN` соответственно
+1) Для работы проекта используется несколько API, для которых нужны токены. Их можно добавить как файлом в корень проекта, так и в env:
+    
+    | API             | Название файла для добавления в корень проекта  |  Переменная env    |
+    | --------------- | :---------------------------------------------: | :----------------: |
+    | OpenWeatherMap  | WeatherToken.api                                | SWS_WEATHER_TOKEN  |
+    | OpenCageData    | CitiesToken.api                                 | SWS_CITIES_TOKEN   |
+    | Telegram        | TelegramToken.api                               | SWS_TELEGRAM_TOKEN |
+
 2) `docker build -t smart-weather-service -f Dockerfile.dockerfile .`
 3) `docker run -it smart-weather-service`
 
