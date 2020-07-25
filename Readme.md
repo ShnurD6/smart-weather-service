@@ -68,8 +68,8 @@
 
 | Переменная          | Значения             | По умолчанию |
 | ------------------- | :------------------: | :----------: |
-| $SWS_LOG_TARGET | `File` (Логгирует в файл log.txt), <br> `OutputStream` (выводит логи в cout/cerr) | `File` |
-
+| $SWS_LOG_TARGET     | `File` (Логгирует в файл log.txt), <br> `OutputStream` (выводит логи в cout/cerr) | `File` |
+| $SWS_LOG_FILENAME   | Название файла для записи лога | log.txt | 
 ---
 
 _p.s. Если нужны токены -- напишите в телеграм @shnurd6, я скину)_
