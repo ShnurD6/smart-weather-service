@@ -12,13 +12,14 @@ set(SOURCES
     Sources/JsonParser/JsonParser.hpp
     Sources/WeatherCore/WeatherCore.hpp
     Sources/Clients/Console/ConsoleClient.hpp
-    Sources/Clients/Telegram/TelegramClient.hpp
-    Sources/Logger/Logger.hpp)
+    Sources/Clients/Telegram/TelegramClient.hpp)
+
+add_subdirectory(Sources/SimpleLoggerLib)
 
 include_directories(Sources /usr/local/include)
 
-add_executable(ConsoleClient ${SOURCES} Sources/Clients/Console/main.cpp)
-target_link_libraries(ConsoleClient pthread boost_date_time cpr curl)
+add_executable(ConsoleClient ${SOURCES} ${LOGGER_SOURCES} Sources/Clients/Console/main.cpp)
+target_link_libraries(ConsoleClient pthread cpr curl Logger)
 
-add_executable(TelegramClient ${SOURCES} Sources/Clients/Telegram/main.cpp)
-target_link_libraries(TelegramClient pthread ssl crypto boost_date_time cpr curl /usr/local/lib/libTgBot.a)
+add_executable(TelegramClient ${SOURCES} ${LOGGER_SOURCES} Sources/Clients/Telegram/main.cpp)
+target_link_libraries(TelegramClient pthread ssl crypto cpr curl /usr/local/lib/libTgBot.a Logger)

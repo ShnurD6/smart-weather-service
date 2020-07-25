@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include "JsonParser/JsonParser.hpp"
-#include "Logger/Logger.hpp"
+#include "SimpleLoggerLib/Logger.hpp"
 #include <cpr/cpr.h>
 
 using namespace std::string_literals;
@@ -14,13 +14,14 @@ public:
         const std::string& aHost,
         const std::string& aApiTarget)
         : mRequestUrl(aHost + aApiTarget)
+        , mLogger("ApiCon")
     {};
 
     [[nodiscard]] std::string MakeRequest(const std::string& aQueryString) const
     {
         std::string urlWithQuery{mRequestUrl + aQueryString};
 
-        Log("Send " + aQueryString + " to " + mRequestUrl + "...", Logger::LogType::Debug);
+        mLogger.DebugLog("Send " + aQueryString + " to " + mRequestUrl + "...");
 
         auto r = cpr::Get(cpr::Url{urlWithQuery});
 
@@ -30,10 +31,5 @@ public:
 private:
 
     std::string mRequestUrl;
-
-    template <typename T>
-    void Log(T&& aNewLog, Logger::LogType aLogType) const
-    {
-        GetLogger().Log("[ApiCon] " + std::forward<T>(aNewLog), aLogType);
-    }
+    LoggerInstance mLogger;
 };

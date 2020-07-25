@@ -2,7 +2,7 @@
 
 #include <tgbot/tgbot.h>
 #include <string>
-#include "Logger/Logger.hpp"
+#include "Logger.hpp"
 
 #include "WeatherCore/WeatherCore.hpp"
 
@@ -11,8 +11,9 @@ struct TelegramClient
     TelegramClient(WeatherCore& aWeatherCore)
         : Bot(GetCredentials().GetTelegramToken())
         , Core(aWeatherCore)
+        , mLogger("TgCli")
     {
-        Log("Initialized", Logger::LogType::Debug);
+        mLogger.DebugLog("Initialized");
         Bot.getEvents().onCommand(
             "start",
             [this](const TgBot::Message::Ptr& aMessage)
@@ -41,7 +42,7 @@ struct TelegramClient
             Bot.getApi().deleteWebhook();
             TgBot::TgLongPoll longPoll(Bot);
 
-            Log("Started with username " + Bot.getApi().getMe()->username, Logger::LogType::Debug);
+            mLogger.DebugLog("Started with username " + Bot.getApi().getMe()->username);
             while (true)
                 longPoll.start();
         }
@@ -55,13 +56,14 @@ private:
 
     TgBot::Bot Bot;
     WeatherCore& Core;
+    LoggerInstance mLogger;
 
     void AllMessagesHandler(const TgBot::Message::Ptr& aMessage) const
     {
-        Log((boost::format("User %s (%d) send message '%s'")
+        mLogger.DebugLog((boost::format("User %s (%d) send message '%s'")
             % aMessage->from->username
             % aMessage->from->id
-            % aMessage->text).str(), Logger::LogType::Debug);
+            % aMessage->text).str());
 
         std::string answer;
 
@@ -92,22 +94,22 @@ private:
 
         if (parseRes.size() == 2)
         {
-            Log("Catch old query format. Set zero to MessageId.", Logger::LogType::Debug);
+            mLogger.DebugLog("Catch old query format. Set zero to MessageId.");
             parseRes.emplace_back("0");
         }
         assert(parseRes.size() == 3);
 
-        Log((boost::format("Parsed query: RequestId = %s, CityNum = %s, MessageId = %s")
+        mLogger.DebugLog((boost::format("Parsed query: RequestId = %s, CityNum = %s, MessageId = %s")
             % parseRes[0]
             % parseRes[1]
-            % parseRes[2]).str(), Logger::LogType::Debug);
+            % parseRes[2]).str());
 
         return {std::stoll(parseRes[0]), std::stoul(parseRes[1]), std::stoll(parseRes[2])};
     }
 
     void SimpleSendMessage(std::int64_t aChatId, const std::string& aMessage, std::int32_t replyToMessageId = 0) const
     {
-        Log("Send \'" + aMessage + "\' to chat " + std::to_string(aChatId) + "...", Logger::LogType::Debug);
+        mLogger.DebugLog("Send \'" + aMessage + "\' to chat " + std::to_string(aChatId) + "...");
 
         Bot.getApi().sendMessage(
             aChatId,
@@ -115,7 +117,7 @@ private:
             false, // disableWebPagePreview
             replyToMessageId);
 
-        Log("[" + std::to_string(aChatId) + "] Done", Logger::LogType::Debug);
+        mLogger.DebugLog("[" + std::to_string(aChatId) + "] Done");
     }
 
     void ProcessStartCommand(const TgBot::Message::Ptr& aMessage) const
@@ -130,10 +132,10 @@ private:
 
     void ProcessQuery(const TgBot::CallbackQuery::Ptr& aQuery)
     {
-        Log((boost::format("User %s (%d) send query: '%s'")
+        mLogger.DebugLog((boost::format("User %s (%d) send query: '%s'")
             % aQuery->from->username
             % aQuery->from->id
-            % aQuery->data).str(), Logger::LogType::Debug);
+            % aQuery->data).str());
 
         const auto [requestId, cityId, messageId] = GetIdsFromQuery(aQuery->data);
 
@@ -148,9 +150,9 @@ private:
         auto latitude = aMessage->location->latitude;
         auto longitude = aMessage->location->longitude;
 
-        Log((boost::format("parse location: {latitude = %f, longitude = %f}")
+        mLogger.DebugLog((boost::format("parse location: {latitude = %f, longitude = %f}")
             % latitude
-            % longitude).str(), Logger::LogType::Debug);
+            % longitude).str());
 
         SimpleSendMessage(
             aMessage->from->id,
@@ -193,11 +195,5 @@ private:
             false, // disableWebPagePreview
             aMessage->messageId,      // replyToMessageId
             keyboard);
-    }
-
-    template <typename T>
-    void Log(T&& aNewLog, Logger::LogType aLogType) const
-    {
-        GetLogger().Log("[TgCli] "s + std::forward<T>(aNewLog), aLogType);
     }
 };

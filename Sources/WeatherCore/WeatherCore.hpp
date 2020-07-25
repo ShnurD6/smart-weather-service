@@ -6,7 +6,7 @@
 #include "ApiConnection/ApiConnection.hpp"
 #include "QueryGenerators/QueryGenerators.hpp"
 #include "JsonParser/JsonParser.hpp"
-#include "Logger/Logger.hpp"
+#include "Logger.hpp"
 
 using namespace std::string_literals;
 using json = nlohmann::json;
@@ -21,6 +21,11 @@ class WeatherCore
     using TCoordinates = std::pair<double, double>;
 
 public:
+
+    WeatherCore()
+        : mLogger("Core")
+    {
+    }
 
     struct Reply
     {
@@ -54,9 +59,7 @@ public:
         const std::string& aLatitude,
         const std::string& aLongitude) const
     {
-        Log(
-            (boost::format("GetWeatherByLocation(%s, %s)") % aLatitude % aLongitude).str(),
-            Logger::LogType::Debug);
+        mLogger.DebugLog((boost::format("GetWeatherByLocation(%s, %s)") % aLatitude % aLongitude).str());
 
         std::stringstream result;
 
@@ -256,9 +259,8 @@ private:
         }
         catch (json::exception& aException)
         {
-            Log(
-                "Try to parse \'" + aResponse + "\', but catch parse exception: "s + aException.what(),
-                Logger::LogType::Error);
+            mLogger.ErrorLog(
+                "Try to parse \'" + aResponse + "\', but catch parse exception: "s + aException.what());
 
             return "Что-то не так с реквестом, пожалуйста, перепроверьте данные и попробуйте ещё раз)"s;
         }
@@ -295,12 +297,8 @@ private:
         return mRequestId++;
     }
 
-    template <typename T>
-    void Log(T&& aNewLog, Logger::LogType aLogType) const
-    {
-        GetLogger().Log("[Core] " + std::forward<T>(aNewLog), aLogType);
-    }
-
     mutable Reply::TRequestId mRequestId;
     mutable std::map<Reply::TRequestId, std::vector<TCoordinates>> mWaitingRequests;
+
+    LoggerInstance mLogger;
 };

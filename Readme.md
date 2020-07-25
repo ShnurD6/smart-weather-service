@@ -48,7 +48,8 @@
 
 Как это запустить:
 
-1) Для работы проекта используется несколько API, для которых нужны токены. Их можно добавить как файлом в корень проекта, так и в env:
+1) git clone --recursive https://github.com/ShnurD6/smart-weather-service
+2) Для работы проекта используется несколько API, для которых нужны токены. Их можно добавить как файлом в корень проекта, так и в env:
     
     | API             | Название файла для добавления в корень проекта  |  Переменная env    |
     | --------------- | :---------------------------------------------: | :----------------: |
@@ -56,8 +57,8 @@
     | OpenCageData    | CitiesToken.api                                 | SWS_CITIES_TOKEN   |
     | Telegram        | TelegramToken.api                               | SWS_TELEGRAM_TOKEN |
 
-2) `docker build -t smart-weather-service -f Dockerfile.dockerfile .`
-3) `docker run -it smart-weather-service`
+3) `docker build -t smart-weather-service -f Dockerfile.dockerfile .`
+4) `docker run -it smart-weather-service`
 
 Если вы не хотите ставить докер (это просто, поверьте) - [есть возможность собрать всё вручную](ManualBuild.md "ссылка на инструкцию")
 

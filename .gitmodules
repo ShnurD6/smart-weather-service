@@ -1,0 +1,3 @@
+[submodule "Sources/SimpleLoggerLib"]
+	path = Sources/SimpleLoggerLib
+	url = https://github.com/ShnurD6/SimpleLoggerLib
