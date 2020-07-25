@@ -3,9 +3,9 @@
 #include <string>
 #include <variant>
 #include <boost/format.hpp>
+#include <nlohmann/json.hpp>
 #include "ApiConnection/ApiConnection.hpp"
 #include "QueryGenerators/QueryGenerators.hpp"
-#include "JsonParser/JsonParser.hpp"
 #include "Logger.hpp"
 
 using namespace std::string_literals;

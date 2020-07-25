@@ -9,14 +9,13 @@ set(SOURCES
     Sources/Credentials/Credentials.hpp
     Sources/QueryGenerators/WeatherQueryGenerator.hpp
     Sources/QueryGenerators/CitiesQueryGenerator.hpp
-    Sources/JsonParser/JsonParser.hpp
     Sources/WeatherCore/WeatherCore.hpp
     Sources/Clients/Console/ConsoleClient.hpp
     Sources/Clients/Telegram/TelegramClient.hpp)
 
 add_subdirectory(Sources/SimpleLoggerLib)
 
-include_directories(Sources /usr/local/include)
+include_directories(Sources Sources/JsonParser/single_include)
 
 add_executable(ConsoleClient ${SOURCES} ${LOGGER_SOURCES} Sources/Clients/Console/main.cpp)
 target_link_libraries(ConsoleClient pthread cpr curl Logger)

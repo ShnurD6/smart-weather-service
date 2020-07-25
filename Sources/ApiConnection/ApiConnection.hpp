@@ -1,9 +1,9 @@
 #pragma once
 
 #include <iostream>
-#include "JsonParser/JsonParser.hpp"
-#include "SimpleLoggerLib/Logger.hpp"
+#include <nlohmann/json.hpp>
 #include <cpr/cpr.h>
+#include "SimpleLoggerLib/Logger.hpp"
 
 using namespace std::string_literals;
 class ApiConnection

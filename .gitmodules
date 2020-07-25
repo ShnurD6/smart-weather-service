@@ -1,3 +1,6 @@
 [submodule "Sources/SimpleLoggerLib"]
 	path = Sources/SimpleLoggerLib
 	url = https://github.com/ShnurD6/SimpleLoggerLib
+[submodule "Sources/JsonParser"]
+	path = Sources/JsonParser
+	url = https://github.com/nlohmann/json.git
